@@ -3,7 +3,10 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\SupplierController;;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PaymentSpaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,10 +42,9 @@ Route::middleware([
         return Inertia::render('Admin/Settings');
     })->name('settings');
     Route::resource('/supplier',SupplierController::class);
-});
-
-Route::get('/test',function(){
-    return Inertia::render('Welcome');
+    Route::resource('/category',CategoryController::class);
+    Route::resource('/location',LocationController::class);
+    Route::resource('/payments',PaymentSpaController::class);
 });
 
 

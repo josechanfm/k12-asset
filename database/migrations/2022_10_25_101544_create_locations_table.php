@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
+            $table->string('abbr');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

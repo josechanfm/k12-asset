@@ -12,12 +12,11 @@
         </template>
     </a-table>
 
-
     <a-modal v-model:visible="modalVisible" :title="modalTitle" width="60%" @update="updateRecord(modalForm)" @onCancel="closeModal()">
         <a-form
             ref="modalRef"
             :model="modalForm"
-            name="category"
+            name="location"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -28,12 +27,6 @@
             @onFinishFailed="onFinishFailed"
         >
             <a-input type="hidden" v-model:value="modalForm.id"/>
-            <a-form-item
-                label="Parent"
-                name="parent_id"
-            >
-                <a-input v-model:value="modalForm.parent_id" />
-            </a-form-item>
             <a-form-item 
                 label="Abbr"
                 name="abbr"
@@ -73,12 +66,12 @@
             <a-button v-if="modalMode=='Edit'" key="Update" type="primary" :loading="loading" @click="updateRecord(modalForm)">Update</a-button>
             <a-button v-if="modalMode=='Create'"  key="Store" type="primary" :loading="loading" @click="storeRecord(modalForm)">Add</a-button>
         </template>
-    </a-modal>    
+    </a-modal> 
+  
 </template>
 
 <script>
 import { Form } from 'ant-design-vue';
-//import { useForm } from "@inertiajs/inertia-vue3";
 import { ref,reactive} from 'vue';
 
 export default{
@@ -93,11 +86,6 @@ export default{
             modalTitle:'',
             modalMode:'',
             columns:[
-                {
-                    title: 'Parent',
-                    dataIndex: 'parent_id',
-                    key: 'parent_id',
-                },
                 {
                     title: 'Abbr',
                     dataIndex: 'abbr',
@@ -207,9 +195,8 @@ export default{
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/category/' + recordId,{
+            this.$inertia.delete('/location/' + recordId,{
                 onSuccess: (page)=>{
-                    this.fetchData();
                     console.log(page);
                 },
                 onError: (error)=>{
@@ -225,9 +212,8 @@ export default{
         storeRecord(data){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
-                this.$inertia.post('/category/', data,{
+                this.$inertia.post('/location/', data,{
                     onSuccess:(page)=>{
-                        this.fetchData();
                         this.ChangeModalMode('Close');
                     },
                     onError:(err)=>{
@@ -245,11 +231,11 @@ export default{
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
                 data._method = 'PATCH';
-                this.$inertia.post('/category/' + data.id, data,{
+                this.$inertia.post('/location/' + data.id, data,{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
-                        this.fetchData();
+                        //this.fetchData();
                     },
                     onError:(error)=>{
                         console.log(error);
@@ -266,7 +252,7 @@ export default{
         },
         fetchData(){
             this.loading=true;
-            axios.get("/category")
+            axios.get("/location")
                 .then(response=>{
                     this.dataSource=response.data;
                     console.log("aaaaaaaaaaaaaa");

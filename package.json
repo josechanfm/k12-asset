@@ -21,6 +21,6 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "ant-design-vue": "^3.2.13"
+        "ant-design-vue": "^3.2.15"
     }
 }

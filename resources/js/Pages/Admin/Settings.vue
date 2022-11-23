@@ -1,6 +1,9 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Supplier from '@/Pages/Admin/Supplier.vue';
+import Category from '@/Pages/Admin/Category.vue';
+import Location from '@/Pages/Admin/Location.vue';
+import Payments_spa from '@/Pages/Admin/Payments_spa.vue';
 
 import { defineComponent, ref } from 'vue';
 
@@ -23,10 +26,13 @@ const activeKey = ref('1');
                             <Supplier/>
                         </a-tab-pane>
                         <a-tab-pane key="2" tab="Category" force-render>
-                            Content of Tab Pane 2
+                            <Category/>
                         </a-tab-pane>
                         <a-tab-pane key="3" tab="Location">
-                            Content of Tab Pane 3
+                            <Location/>
+                        </a-tab-pane>
+                        <a-tab-pane key="4" tab="Payment">
+                            <Payments_spa/>
                         </a-tab-pane>
                     </a-tabs>
                 </div>

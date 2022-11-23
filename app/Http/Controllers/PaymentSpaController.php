@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Location;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Validator;
 
-class LocationController extends Controller
+class PaymentSpaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $data = Location::paginate(5);
+        $data = Payment::paginate(5);
+        //return Inertia::render('Payments_spa',['payments'=>$data]);
         return response()->json($data);
-
     }
 
     /**
@@ -27,7 +27,9 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render(
+            'Payments_spa/Create'
+        );
     }
 
     /**
@@ -39,36 +41,16 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'abbr' => ['required'],
-            'title' => ['required'],
-            'status' => ['required'],
+            'merchant_id' => ['required'],
         ])->validate();
+        $request['notify_url']='https://abc.com';
+        $request['return_url']='https://efg.com';
+        $request['sign']='md5';
 
-        Location::create($request->all());
-        return redirect()->back();
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        Payment::create($request->all());
+  
+        return redirect()->back()
+                    ->with('message', 'Article Created Successfully.');
     }
 
     /**
@@ -80,24 +62,16 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Validator::make($request->all(), [
-            'abbr' => ['required'],
-            'title' => ['required'],
-            'status' => ['required'],
+        Validator::make($request->all(),[
+            'merchant_id'=>['required'],
+            'merchantTid'=>['required'],
         ])->validate();
-        
         if($request->has('id')){
-            $location=Location::find($id);
-            $location->abbr=$request->abbr;
-            $location->title=$request->title;
-            $location->description=$request->description;
-            $location->status=$request->status;
-            $location->save();
-            return redirect()->back();
-        }else{
-            return redirect()->back();
+            Payment::find($request->input('id'))->update($request->all());
         }
+        return redirect()->back();
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -106,13 +80,12 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        $location=Location::find($id);
-        if($location){
-            $location->delete();
+        $payment=Payment::find($id);
+        if($payment){
+            $payment->delete();
             return redirect()->back()
                 ->with('message', 'Blog Delete Successfully');
 
         }
-        
     }
 }

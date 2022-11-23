@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->string('abbr')->nullable();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->boolean('status');
             $table->timestamps();
         });
     }

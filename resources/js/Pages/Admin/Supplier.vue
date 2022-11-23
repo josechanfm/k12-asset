@@ -254,6 +254,7 @@ export default{
             this.$inertia.delete('/supplier/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
+                    this.fetchData();
                 },
                 onError: (error)=>{
                     console.log(error);
@@ -271,6 +272,7 @@ export default{
                 this.$inertia.post('/supplier/', data,{
                     onSuccess:(page)=>{
                         this.ChangeModalMode('Close');
+                        this.fetchData();
                     },
                     onError:(err)=>{
                         console.log(err);

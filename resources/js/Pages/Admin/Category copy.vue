@@ -209,7 +209,6 @@ export default{
             if (!confirm('Are you sure want to remove?')) return;
             this.$inertia.delete('/category/' + recordId,{
                 onSuccess: (page)=>{
-                    this.fetchData();
                     console.log(page);
                 },
                 onError: (error)=>{
@@ -227,7 +226,6 @@ export default{
                 this.loading=true;
                 this.$inertia.post('/category/', data,{
                     onSuccess:(page)=>{
-                        this.fetchData();
                         this.ChangeModalMode('Close');
                     },
                     onError:(err)=>{
@@ -249,7 +247,7 @@ export default{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
-                        this.fetchData();
+                        //this.fetchData();
                     },
                     onError:(error)=>{
                         console.log(error);
