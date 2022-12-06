@@ -3,6 +3,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Supplier from '@/Pages/Admin/Supplier.vue';
 import Category from '@/Pages/Admin/Category.vue';
 import Location from '@/Pages/Admin/Location.vue';
+import Building from '@/Pages/Admin/Building.vue';
 import Payments_spa from '@/Pages/Admin/Payments_spa.vue';
 
 import { defineComponent, ref } from 'vue';
@@ -31,9 +32,12 @@ const activeKey = ref('1');
                         <a-tab-pane key="3" tab="Location">
                             <Location/>
                         </a-tab-pane>
-                        <a-tab-pane key="4" tab="Payment">
-                            <Payments_spa/>
+                        <a-tab-pane key="4" tab="Building">
+                            <Building/>
                         </a-tab-pane>
+                        <!-- <a-tab-pane key="4" tab="Payment">
+                            <Payments_spa/>
+                        </a-tab-pane> -->
                     </a-tabs>
                 </div>
             </div>

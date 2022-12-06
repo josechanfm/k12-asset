@@ -16,14 +16,14 @@ return new class extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name_zh');
-            $table->string('name_en');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('categories');
-            $table->date('registed_date');
-            $table->date('disproved_date');
-            $table->text('remark');
+            $table->string('name_en')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('categories')->nullable();
+            $table->date('register_date')->nullable();
+            $table->date('disproved_date')->nullable();
+            $table->text('remark')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });

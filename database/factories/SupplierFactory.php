@@ -17,7 +17,12 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name_zh'=>$this->faker->company,
+            'email'=>$this->faker->email,
+            'phone'=>$this->faker->phoneNumber,
+            'address'=>$this->faker->address,
+            'register_date'=>$this->faker->dateTimeBetween('-1 years', '+0 days'),
+            'active'=>1
         ];
     }
 }

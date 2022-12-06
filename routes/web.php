@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\PaymentSpaController;
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::middleware([
     Route::resource('/supplier',SupplierController::class);
     Route::resource('/category',CategoryController::class);
     Route::resource('/location',LocationController::class);
+    Route::resource('/building',BuildingController::class);
     Route::resource('/payments',PaymentSpaController::class);
 });
 
