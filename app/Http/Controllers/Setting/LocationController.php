@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setting;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Category;
+use App\Models\Location;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::paginate(5);
+        $data = Location::paginate(5);
         return response()->json($data);
 
     }
@@ -44,7 +46,7 @@ class CategoryController extends Controller
             'status' => ['required'],
         ])->validate();
 
-        Category::create($request->all());
+        Location::create($request->all());
         return redirect()->back();
 
     }
@@ -87,12 +89,12 @@ class CategoryController extends Controller
         ])->validate();
         
         if($request->has('id')){
-            $category=Category::find($id);
-            $category->abbr=$request->abbr;
-            $category->title=$request->title;
-            $category->description=$request->description;
-            $category->status=$request->status;
-            $category->save();
+            $location=Location::find($id);
+            $location->abbr=$request->abbr;
+            $location->title=$request->title;
+            $location->description=$request->description;
+            $location->status=$request->status;
+            $location->save();
             return redirect()->back();
         }else{
             return redirect()->back();
@@ -106,9 +108,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category=Category::find($id);
-        if($category){
-            $category->delete();
+        $location=Location::find($id);
+        if($location){
+            $location->delete();
             return redirect()->back()
                 ->with('message', 'Blog Delete Successfully');
 

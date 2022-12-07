@@ -1,10 +1,10 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import Supplier from '@/Pages/Admin/Supplier.vue';
-import Category from '@/Pages/Admin/Category.vue';
-import Location from '@/Pages/Admin/Location.vue';
-import Building from '@/Pages/Admin/Building.vue';
-import Payments_spa from '@/Pages/Admin/Payments_spa.vue';
+import Supplier from '@/Pages/Setting/Supplier.vue';
+import Category from '@/Pages/Setting/Category.vue';
+import Location from '@/Pages/Setting/Location.vue';
+import Building from '@/Pages/Setting/Building.vue';
+import Payments_spa from '@/Pages/Setting/Payments_spa.vue';
 
 import { defineComponent, ref } from 'vue';
 

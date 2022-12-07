@@ -17,7 +17,7 @@
         <a-form
             ref="modalRef"
             :model="modalForm"
-            name="category"
+            name="supplier"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -28,46 +28,95 @@
             @onFinishFailed="onFinishFailed"
         >
             <a-input type="hidden" v-model:value="modalForm.id"/>
-            <a-form-item
-                label="Parent"
-                name="parent_id"
-            >
-                <a-input v-model:value="modalForm.parent_id" />
-            </a-form-item>
             <a-form-item 
-                label="Abbr"
-                name="abbr"
+                label="Name Zh"
+                name="name_zh"
             >
-                <a-input v-model:value="modalForm.abbr" />
+                <a-input v-model:value="modalForm.name_zh" />
             </a-form-item>
 
             <a-form-item
-                label="Title"
-                name="title"
+                label="Name En"
+                name="name_en"
             >
-                <a-input v-model:value="modalForm.title" />
+                <a-input v-model:value="modalForm.name_en" />
             </a-form-item>
 
             <a-form-item
-                label="Description"
-                name="description"
+                label="Email"
+                name="email"
+            >
+                <a-input v-model:value="modalForm.email" />
+            </a-form-item>
+
+            <a-form-item
+                label="Phone"
+                name="phone"
+            >
+                <a-input v-model:value="modalForm.phone" />
+            </a-form-item>
+
+            <a-form-item
+                label="Address"
+                name="address"
             >
                 <a-textarea
-                    v-model:value="modalForm.description"
+                    v-model:value="modalForm.address"
                     placeholder="Please input address location of the company"
                     :auto-size="{ minRows: 2, maxRows: 5 }"
                 />
             </a-form-item>
+
             <a-form-item
-                label="Status"
-                name="status"
+                label="Category"
+                name="category"
             >
-                <a-switch v-model:checked="modalForm.status" checked-children="开" un-checked-children="关" />
-                {{modalForm.status}}
-                
+                <a-select
+                    v-model:value="modalForm.category"
+                    mode="multiple"
+                    style="width: 100%"
+                    placeholder="Select Item..."
+                    max-tag-count="responsive"
+                    :options="categoryOptions"
+                ></a-select>
+
+
+            </a-form-item>
+
+            <a-form-item
+                label="Registed Date"
+                name="registed_date"
+            >
+                <a-date-picker v-model:value="modalForm.registed_date" value-format="YYYY-MM-DD" />
             </a-form-item>
             
+            <a-form-item
+                label="Disproved Date"
+                name="disproved_date"
+            >
+                <a-date-picker v-model:value="modalForm.disproved_date" value-format="YYYY-MM-DD" />
+            </a-form-item>
 
+            <a-form-item
+                label="Remark"
+                name="remark"
+            >
+                <a-textarea
+                    v-model:value="modalForm.remark"
+                    placeholder="Remark"
+                    :auto-size="{ minRows: 2, maxRows: 5 }"
+                />
+            </a-form-item>
+
+
+            <a-form-item
+                label="Active"
+                name="active"
+            >
+                <a-switch v-model:checked="modalForm.active" checked-children="开" un-checked-children="关" />
+            </a-form-item>
+            <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+            </a-form-item> -->
         </a-form>
         <template #footer>
             <a-button v-if="modalMode=='Edit'" key="Update" type="primary" :loading="loading" @click="updateRecord(modalForm)">Update</a-button>
@@ -79,60 +128,39 @@
 <script>
 import { Form } from 'ant-design-vue';
 //import { useForm } from "@inertiajs/inertia-vue3";
-import { ref,reactive} from 'vue';
+import {ref,reactive} from 'vue';
 
 export default{
-   
     data(){
         return{
             dataSource:[],
             currentId:0,
             modalRef:ref(),
-            modalForm: reactive(),
+            modalForm: ref(),
             modalVisible:false,
             modalTitle:'',
             modalMode:'',
             columns:[
                 {
-                    title: 'Parent',
-                    dataIndex: 'parent_id',
-                    key: 'parent_id',
+                    title: 'Name',
+                    dataIndex: 'name_zh',
+                    key: 'name',
                 },
                 {
-                    title: 'Abbr',
-                    dataIndex: 'abbr',
-                    key: 'abbr',
+                    title: 'Age',
+                    dataIndex: 'phone',
+                    key: 'age',
                 },
                 {
-                    title: 'Title',
-                    dataIndex: 'title',
-                    key: 'title',
-                },
-                {
-                    title: 'Status',
-                    dataIndex: 'status',
-                    key: 'status',
+                    title: 'Address',
+                    dataIndex: 'address',
+                    key: 'address',
                 },
                 {
                     title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
-            ],
-            categoryOptions:[
-                {
-                    value: 'c1',
-                    label: 'Jack',
-                }, {
-                    value: 'c2',
-                    label: 'Lucy',
-                }, {
-                    value: 'c3',
-                    label: 'Disabled',
-                }, {
-                    value: 'c4',
-                    label: 'Yiminghe',
-                }
             ],
             loading:false,
             rules:{
@@ -180,6 +208,7 @@ export default{
             }
         },
         ChangeModalMode(mode){
+            console.log("watch: "+mode);
             if(mode=='Create'){
                 this.modalMode=mode;
                 this.modalTitle='Create Record';
@@ -207,9 +236,10 @@ export default{
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/category/' + recordId,{
+            this.$inertia.delete('/settings/supplier/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
+                    this.fetchData();
                 },
                 onError: (error)=>{
                     console.log(error);
@@ -224,9 +254,10 @@ export default{
         storeRecord(data){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
-                this.$inertia.post('/category/', data,{
+                this.$inertia.post('/settings/supplier/', data,{
                     onSuccess:(page)=>{
                         this.ChangeModalMode('Close');
+                        this.fetchData();
                     },
                     onError:(err)=>{
                         console.log(err);
@@ -238,16 +269,14 @@ export default{
             });
         },
         updateRecord(data){
-            console.log(this.currentId);
-            console.log(data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
                 data._method = 'PATCH';
-                this.$inertia.post('/category/' + data.id, data,{
+                this.$inertia.post('/settings/supplier/' + data.id, data,{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
-                        //this.fetchData();
+                        this.fetchData();
                     },
                     onError:(error)=>{
                         console.log(error);
@@ -264,10 +293,9 @@ export default{
         },
         fetchData(){
             this.loading=true;
-            axios.get("/category")
+            axios.get("/settings/supplier")
                 .then(response=>{
                     this.dataSource=response.data;
-                    console.log("aaaaaaaaaaaaaa");
                     console.log(response.data);
                 }
             );

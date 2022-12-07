@@ -162,21 +162,6 @@ export default{
                     key: 'operation',
                 },
             ],
-            categoryOptions:[
-                {
-                    value: 'c1',
-                    label: 'Jack',
-                }, {
-                    value: 'c2',
-                    label: 'Lucy',
-                }, {
-                    value: 'c3',
-                    label: 'Disabled',
-                }, {
-                    value: 'c4',
-                    label: 'Yiminghe',
-                }
-            ],
             loading:false,
             rules:{
                 name_zh:{
@@ -251,7 +236,7 @@ export default{
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/supplier/' + recordId,{
+            this.$inertia.delete('/settings/supplier/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                     this.fetchData();
@@ -269,7 +254,7 @@ export default{
         storeRecord(data){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
-                this.$inertia.post('/supplier/', data,{
+                this.$inertia.post('/settings/supplier/', data,{
                     onSuccess:(page)=>{
                         this.ChangeModalMode('Close');
                         this.fetchData();
@@ -287,7 +272,7 @@ export default{
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
                 data._method = 'PATCH';
-                this.$inertia.post('/supplier/' + data.id, data,{
+                this.$inertia.post('/settings/supplier/' + data.id, data,{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
@@ -308,7 +293,7 @@ export default{
         },
         fetchData(){
             this.loading=true;
-            axios.get("/supplier")
+            axios.get("/settings/supplier")
                 .then(response=>{
                     this.dataSource=response.data;
                     console.log(response.data);

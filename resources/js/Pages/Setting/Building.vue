@@ -12,12 +12,11 @@
         </template>
     </a-table>
 
-
     <a-modal v-model:visible="modalVisible" :title="modalTitle" width="60%" @update="updateRecord(modalForm)" @onCancel="closeModal()">
         <a-form
             ref="modalRef"
             :model="modalForm"
-            name="category"
+            name="building"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -119,21 +118,6 @@ export default{
                     key: 'operation',
                 },
             ],
-            categoryOptions:[
-                {
-                    value: 'c1',
-                    label: 'Jack',
-                }, {
-                    value: 'c2',
-                    label: 'Lucy',
-                }, {
-                    value: 'c3',
-                    label: 'Disabled',
-                }, {
-                    value: 'c4',
-                    label: 'Yiminghe',
-                }
-            ],
             loading:false,
             rules:{
                 name_zh:{
@@ -172,7 +156,7 @@ export default{
                 email:null,
                 phone:null,
                 address:null,
-                categories:null,
+                buildings:null,
                 register_date:null,
                 disproved_date:null,
                 remark:null,
@@ -207,7 +191,7 @@ export default{
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/category/' + recordId,{
+            this.$inertia.delete('/settings/building/' + recordId,{
                 onSuccess: (page)=>{
                     this.fetchData();
                     console.log(page);
@@ -225,7 +209,7 @@ export default{
         storeRecord(data){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
-                this.$inertia.post('/category/', data,{
+                this.$inertia.post('/settings/building/', data,{
                     onSuccess:(page)=>{
                         this.fetchData();
                         this.ChangeModalMode('Close');
@@ -245,7 +229,7 @@ export default{
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
                 data._method = 'PATCH';
-                this.$inertia.post('/category/' + data.id, data,{
+                this.$inertia.post('/settings/building/' + data.id, data,{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
@@ -266,7 +250,7 @@ export default{
         },
         fetchData(){
             this.loading=true;
-            axios.get("/category")
+            axios.get("/settings/building")
                 .then(response=>{
                     this.dataSource=response.data;
                     console.log("aaaaaaaaaaaaaa");

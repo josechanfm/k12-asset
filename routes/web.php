@@ -3,11 +3,13 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\PaymentSpaController;
+use App\Http\Controllers\Setting\SupplierController;
+use App\Http\Controllers\Setting\CategoryController;
+use App\Http\Controllers\Setting\LocationController;
+use App\Http\Controllers\Setting\BuildingController;
+use App\Http\Controllers\Setting\PaymentSpaController;
+use App\Http\Controllers\ItemController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,14 +41,22 @@ Route::middleware([
     Route::get('/admin',function(){
         return Inertia::render('Admin/Panel');
     })->name('admin');
-    Route::get('/settings',function(){
-        return Inertia::render('Admin/Settings');
-    })->name('settings');
-    Route::resource('/supplier',SupplierController::class);
-    Route::resource('/category',CategoryController::class);
-    Route::resource('/location',LocationController::class);
-    Route::resource('/building',BuildingController::class);
-    Route::resource('/payments',PaymentSpaController::class);
+    Route::prefix('settings')->group(function(){
+        Route::get('/',function(){
+            return Inertia::render('Setting/Settings');
+        })->name('settings');
+        Route::resource('/supplier',SupplierController::class);
+        Route::resource('/category',CategoryController::class);
+        Route::resource('/location',LocationController::class);
+        Route::resource('/building',BuildingController::class);
+        Route::resource('/payments',PaymentSpaController::class);
+    });
+
+    Route::prefix('item')->group(function(){
+        Route::resource('/', ItemController::class);
+        Route::get('/checkin', [ItemController::class, 'checkin']);
+    });
+
 });
 
 
