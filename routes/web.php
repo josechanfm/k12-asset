@@ -53,6 +53,9 @@ Route::middleware([
     });
 
     Route::prefix('item')->group(function(){
+        Route::get('/dashboard',function(){
+            return Inertia::render('Item/Item');
+        });
         Route::resource('/', ItemController::class);
         Route::get('/checkin', [ItemController::class, 'checkin']);
     });

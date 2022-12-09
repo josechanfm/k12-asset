@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Item;
 
 class ItemController extends Controller
 {
@@ -13,8 +15,10 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        return Inertia::render('Item/Item');
+    {
+        $data = Item::paginate(5);
+        return response()->json($data);
+        // return Inertia::render('Item/Item');
     }
 
     /**
@@ -35,7 +39,19 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Validator::make($request->all(), [
+            'serial' => ["required"],
+            'title_zh' => ['required'],
+            'photos'=>['required']
+        ])->validate();
+        $data=[
+            'data'=>$request->all()
+        ];
+        //Item::create($request->all());
+        //return redirect()->back();
+        return response()->json($request);
+        //return back()->with('info','You added new items, follow next step!');
+
     }
 
     /**
@@ -83,7 +99,34 @@ class ItemController extends Controller
         //
     }
 
-    public function checkin(){
+    public function checkin()
+    {
         return Inertia::render('Item/Checkin');
+    }
+
+    public function saveFiles($files)
+    {
+        $uploadResult=[];
+        $allowedfileExtension = ['pdf', 'jpg', 'png', 'docx'];
+        foreach ($files as $file) {
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $check = in_array($extension, $allowedfileExtension);
+            //dd($check);
+            if ($check) {
+                $items = Item::create($request->all());
+                foreach ($request->photos as $photo) {
+                    $filename = $photo->store('photos');
+                    ItemDetail::create([
+                        'item_id' => $items->id,
+                        'filename' => $filename
+                    ]);
+                }
+                $uploadResult.push(["file"=>$filename,"result"=>'success']);
+            } else {
+                $uploadResult.push(["file"=>$filename,"result"=>'fail']);
+            }
+        }
+        return $uploadResult;
     }
 }

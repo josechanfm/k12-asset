@@ -1,4 +1,5 @@
 <template>
+    {{items}}
     <a-button type="primary" @click="createRecord()">Add</a-button>
     <a-table :dataSource="dataSource.data" :columns="columns">
         <template #bodyCell="{column, text, record, index}">
@@ -131,6 +132,8 @@ import { Form } from 'ant-design-vue';
 import {ref,reactive} from 'vue';
 
 export default{
+    props: ['items','errors'],
+
     data(){
         return{
             dataSource:[],
@@ -142,19 +145,29 @@ export default{
             modalMode:'',
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name_zh',
-                    key: 'name',
+                    title: 'Serial',
+                    dataIndex: 'serial',
+                    key: 'serial',
                 },
                 {
-                    title: 'Age',
-                    dataIndex: 'phone',
-                    key: 'age',
+                    title: 'Title Zh',
+                    dataIndex: 'title_zh',
+                    key: 'title_zh',
                 },
                 {
-                    title: 'Address',
-                    dataIndex: 'address',
-                    key: 'address',
+                    title: 'Location',
+                    dataIndex: 'location_id',
+                    key: 'location_id',
+                },
+                {
+                    title: 'Category',
+                    dataIndex: 'category_id',
+                    key: 'category_id',
+                },
+                {
+                    title: 'Tags',
+                    dataIndex: 'tag_ids',
+                    key: 'tag_ids',
                 },
                 {
                     title: 'Operation',
@@ -236,7 +249,7 @@ export default{
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/settings/supplier/' + recordId,{
+            this.$inertia.delete('/item/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                     this.fetchData();
@@ -254,7 +267,7 @@ export default{
         storeRecord(data){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
-                this.$inertia.post('/settings/supplier/', data,{
+                this.$inertia.post('/item/', data,{
                     onSuccess:(page)=>{
                         this.ChangeModalMode('Close');
                         this.fetchData();
@@ -272,7 +285,7 @@ export default{
             this.$refs.modalRef.validateFields().then(()=>{
                 this.loading=true;
                 data._method = 'PATCH';
-                this.$inertia.post('/settings/supplier/' + data.id, data,{
+                this.$inertia.post('/item/' + data.id, data,{
                     onSuccess:(page)=>{
                         this.modalVisible=false;
                         this.ChangeModalMode('Close');
@@ -293,7 +306,7 @@ export default{
         },
         fetchData(){
             this.loading=true;
-            axios.get("/settings/supplier")
+            axios.get("/item")
                 .then(response=>{
                     this.dataSource=response.data;
                     console.log(response.data);

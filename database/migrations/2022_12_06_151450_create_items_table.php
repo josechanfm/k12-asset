@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('serial');
             $table->string('title_zh')->nullable();
             $table->string('title_en')->nullable();
             $table->text('description')->nullable();
             $table->bigInteger('location_id')->nullable();
             $table->bigInteger('category_id')->nullable();
-            $table->string('tags_id')->nullable();
+            $table->string('tag_ids')->nullable();
             $table->timestamps();
         });
     }

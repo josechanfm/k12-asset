@@ -45,10 +45,8 @@ class BuildingController extends Controller
             'title' => ['required'],
             'status' => ['required'],
         ])->validate();
-
         Building::create($request->all());
         return redirect()->back();
-
     }
 
     /**
